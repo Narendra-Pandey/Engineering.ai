@@ -38,7 +38,7 @@ extension APIManager {
         
         if NetworkReachabilityManager()!.isReachable == false {
             SVProgressHUD.dismiss()
-            showAlert(messae: ErrorMessage.noInternet.rawValue)
+            showAlert(message: ErrorMessage.noInternet.rawValue)
             return
         }
         
@@ -52,14 +52,14 @@ extension APIManager {
             if response.result.isSuccess {
                 success(response.result.value!)
             }else{
-                self.showAlert(messae: ErrorMessage.APiError.rawValue)
+                self.showAlert(message: ErrorMessage.APiError.rawValue)
                 failure(response.error!)
             }
         }
     }
     
-    private func showAlert(messae:String) {
-        let alert = UIAlertController(title: "Error", message: messae, preferredStyle: .alert)
+    private func showAlert(message:String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.window?.rootViewController?.present(alert, animated: true, completion: nil)
