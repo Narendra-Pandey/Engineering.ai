@@ -1,0 +1,6 @@
+framework module Pods_Engineering_ai_test {
+  umbrella header "Pods-Engineering.ai.test-umbrella.h"
+
+  export *
+  module * { export * }
+}
