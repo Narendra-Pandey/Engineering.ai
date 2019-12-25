@@ -30,7 +30,11 @@ class APIManager{
 
 // MARK: - Send Generic API Call -
 extension APIManager {
-    func sendGenericCall<N:GenericModal>(type:N.Type,router:APIRouter,success:@escaping (_:N)->Void,failure:@escaping (_:Error)->Void) {
+    func sendGenericCall<N:GenericModal>(showLoader:Bool,type:N.Type,router:APIRouter,success:@escaping (_:N)->Void,failure:@escaping (_:Error)->Void) {
+        
+        if showLoader {
+            SVProgressHUD.show()
+        }
         
         if NetworkReachabilityManager()!.isReachable == false {
             SVProgressHUD.dismiss()
@@ -57,6 +61,7 @@ extension APIManager {
     private func showAlert(messae:String) {
         let alert = UIAlertController(title: "Error", message: messae, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 }

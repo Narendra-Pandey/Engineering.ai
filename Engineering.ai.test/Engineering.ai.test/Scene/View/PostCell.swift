@@ -17,7 +17,6 @@ class PostCell: UITableViewCell {
     
     // MARK: - Variables -
     var switchSelected:((Bool)->Void)?
-    
     var post:Post! {
         didSet {
             postTitleLbl.text = post.title
@@ -29,11 +28,6 @@ class PostCell: UITableViewCell {
                 postDateLbl.text = dateformatter.string(from: date)
             }
         }
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
     }
 
     // MARK: - Switch Action -

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SVProgressHUD
 import UIScrollView_InfiniteScroll
 
 class ViewController: UIViewController {
@@ -20,7 +19,6 @@ class ViewController: UIViewController {
     private var totalPage = 0
     private var post = [Post]()
     private var refreshControl = UIRefreshControl()
-    private var isRefreshing = false
     
     // MARK: - View Life Cycle -
     override func viewDidLoad() {
@@ -31,11 +29,10 @@ class ViewController: UIViewController {
     
     private func prepareView(){
         self.noOfPostSelected()
-        SVProgressHUD.show()
         postTbl.rowHeight = UITableView.automaticDimension
         postTbl.estimatedRowHeight = 50
         self.postTbl.tableFooterView = UIView()
-        getPostListing()
+        getPostListing(isRefreshing: false, showLoader: true)
         addRefreshController()
         
         postTbl.addInfiniteScroll { (tableView) -> Void in
@@ -47,19 +44,15 @@ class ViewController: UIViewController {
             }
         }
     }
-    
     private func addRefreshController() {
         self.refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
         postTbl.addSubview(refreshControl)
     }
-    
-    @objc func refresh(sender:AnyObject) {
-        isRefreshing = true
+    @objc private func refresh(sender:AnyObject) {
         self.currentPage = 0
         self.refreshControl.beginRefreshing()
-        self.getPostListing()
+        self.getPostListing(isRefreshing: true)
     }
-    
     private func noOfPostSelected(){
         let filterCount = post.filter({ $0.isSelected == true})
         if filterCount.count == 0 {
@@ -72,38 +65,35 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Get post listing -
-    private func getPostListing(){
+    private func getPostListing(isRefreshing:Bool = false,showLoader:Bool = false){
         let param = ["tags":"story","page":"\(currentPage)"]
-        
-        APIManager.shared.sendGenericCall(type: PostModal.self, router: .getListing(parameter: param), success: { (response) in
-            SVProgressHUD.dismiss()
+        APIManager.shared.sendGenericCall(showLoader: showLoader, type: PostModal.self, router: .getListing(parameter: param), success: { (response) in
             self.totalPage = Int(response.nbPages) ?? 0
             if self.currentPage == 0 {
                 self.post = response.hits
             }else{
                 self.post.append(contentsOf: response.hits)
             }
+            
+            if isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
             self.setResponseSetUp()
         }) { (error) in
         }
     }
-    
     private func setResponseSetUp() {
-        if self.isRefreshing {
-            self.isRefreshing = false
-            self.refreshControl.endRefreshing()
-        }
         self.postTbl.finishInfiniteScroll()
         self.postTbl.reloadData()
         self.noOfPostSelected()
     }
 }
+
 // MARK: - TableView DataSource-
 extension ViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.post.count
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
         cell.post = self.post[indexPath.row]
