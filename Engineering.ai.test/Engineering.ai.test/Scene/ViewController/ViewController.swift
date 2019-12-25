@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         postTbl.estimatedRowHeight = 50
         self.postTbl.tableFooterView = UIView()
         getPostListing(isRefreshing: false, showLoader: true)
-        addRefreshController()
+        addRefreshControl()
         
         postTbl.addInfiniteScroll { (tableView) -> Void in
             if self.currentPage != self.totalPage {
