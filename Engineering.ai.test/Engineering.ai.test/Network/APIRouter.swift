@@ -19,9 +19,9 @@ enum APIRouter {
     case getListing(parameter:[String:String])
 }
 
+// MARK: - API Router SetUp -
 extension APIRouter : Router {
     var path: String {
-        
         switch self {
         case .getListing:
             return Environment.basePath + "search_by_date"
@@ -43,13 +43,12 @@ extension APIRouter : Router {
     }
 }
 
+// MARK: - Get with Param -
 extension APIRouter {
     func getWithParam() -> String {
-        
         switch self {
         case .getListing(let param):
             var url = URLComponents(string: self.path.trimmingCharacters(in: .whitespaces))
-            
             let queryItem = param.reduce(into: [URLQueryItem]()) { (result, kvPair) in
                 result.append(URLQueryItem(name: kvPair.key, value: kvPair.value))
             }

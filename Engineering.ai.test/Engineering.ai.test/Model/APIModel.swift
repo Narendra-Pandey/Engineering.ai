@@ -28,5 +28,3 @@ class Post: EVNetworkingObject {
 class PostModal: GenericModal {
     var hits = [Post]()
 }
-
-

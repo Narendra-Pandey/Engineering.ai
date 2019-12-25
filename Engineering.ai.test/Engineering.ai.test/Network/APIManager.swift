@@ -13,13 +13,14 @@ import SVProgressHUD
 
 class APIManager{
     
+    // MARK: - Variable -
     static var shared: APIManager = {
-       let instance = APIManager()
+        let instance = APIManager()
         return instance
     }()
-    
     let session:SessionManager!
     
+    // MARK: - Class initiallization -
     private init() {
         let configuration = URLSessionConfiguration.default
         configuration.httpMaximumConnectionsPerHost = 4
@@ -27,8 +28,8 @@ class APIManager{
     }
 }
 
+// MARK: - Send Generic API Call -
 extension APIManager {
-    
     func sendGenericCall<N:GenericModal>(type:N.Type,router:APIRouter,success:@escaping (_:N)->Void,failure:@escaping (_:Error)->Void) {
         
         if NetworkReachabilityManager()!.isReachable == false {
@@ -38,13 +39,12 @@ extension APIManager {
         }
         
         var path = router.path
-        
         if router.method == .get {
             path = router.getWithParam()
         }
         
         session.request(path, method: router.method, parameters: router.parameter, encoding: URLEncoding.default, headers: nil).responseObject { (response: DataResponse<N>) in
-            
+             SVProgressHUD.dismiss()
             if response.result.isSuccess {
                 success(response.result.value!)
             }else{

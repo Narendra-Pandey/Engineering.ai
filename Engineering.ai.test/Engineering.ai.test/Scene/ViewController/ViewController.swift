@@ -11,7 +11,7 @@ import SVProgressHUD
 import UIScrollView_InfiniteScroll
 
 class ViewController: UIViewController {
-
+    
     // MARK: - Outlets -
     @IBOutlet weak var postTbl: UITableView!
     
@@ -20,14 +20,15 @@ class ViewController: UIViewController {
     private var totalPage = 0
     private var post = [Post]()
     private var refreshControl = UIRefreshControl()
-
+    private var isRefreshing = false
+    
     // MARK: - View Life Cycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         prepareView()
     }
-
+    
     private func prepareView(){
         self.noOfPostSelected()
         SVProgressHUD.show()
@@ -53,7 +54,7 @@ class ViewController: UIViewController {
     }
     
     @objc func refresh(sender:AnyObject) {
-        // Code to refresh table view
+        isRefreshing = true
         self.currentPage = 0
         self.refreshControl.beginRefreshing()
         self.getPostListing()
@@ -73,24 +74,28 @@ class ViewController: UIViewController {
     // MARK: - Get post listing -
     private func getPostListing(){
         let param = ["tags":"story","page":"\(currentPage)"]
-       
+        
         APIManager.shared.sendGenericCall(type: PostModal.self, router: .getListing(parameter: param), success: { (response) in
             SVProgressHUD.dismiss()
-
             self.totalPage = Int(response.nbPages) ?? 0
-             self.postTbl.finishInfiniteScroll()
-            
             if self.currentPage == 0 {
                 self.post = response.hits
             }else{
                 self.post.append(contentsOf: response.hits)
             }
-            self.refreshControl.endRefreshing()
-            self.postTbl.reloadData()
-            self.noOfPostSelected()
+            self.setResponseSetUp()
         }) { (error) in
-            SVProgressHUD.dismiss()
         }
+    }
+    
+    private func setResponseSetUp() {
+        if self.isRefreshing {
+            self.isRefreshing = false
+            self.refreshControl.endRefreshing()
+        }
+        self.postTbl.finishInfiniteScroll()
+        self.postTbl.reloadData()
+        self.noOfPostSelected()
     }
 }
 // MARK: - TableView DataSource-
@@ -98,7 +103,7 @@ extension ViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.post.count
     }
-   
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
         cell.post = self.post[indexPath.row]
