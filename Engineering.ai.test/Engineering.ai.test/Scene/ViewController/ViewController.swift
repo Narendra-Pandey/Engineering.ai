@@ -12,7 +12,7 @@ import UIScrollView_InfiniteScroll
 class ViewController: UIViewController {
     
     // MARK: - Outlets -
-    @IBOutlet weak var postTbl: UITableView!
+    @IBOutlet weak  private var postTbl: UITableView!
     
     // MARK: - Variable -
     private var currentPage = 0
@@ -44,7 +44,7 @@ class ViewController: UIViewController {
             }
         }
     }
-    private func addRefreshController() {
+    private func addRefreshControl() {
         self.refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
         postTbl.addSubview(refreshControl)
     }

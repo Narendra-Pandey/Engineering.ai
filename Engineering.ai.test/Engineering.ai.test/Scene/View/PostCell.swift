@@ -17,11 +17,11 @@ class PostCell: UITableViewCell {
     
     // MARK: - Variables -
     var switchSelected:((Bool)->Void)?
+    private let dateformatter = DateFormatter()
     var post:Post! {
         didSet {
             postTitleLbl.text = post.title
             selectedSwitch.isOn = post.isSelected
-            let dateformatter = DateFormatter()
             dateformatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
             if let date = dateformatter.date(from: post.created_at) as Date? {
                 dateformatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss aaa"
