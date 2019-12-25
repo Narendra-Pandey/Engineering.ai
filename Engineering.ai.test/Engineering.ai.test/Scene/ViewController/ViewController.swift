@@ -29,6 +29,7 @@ class ViewController: UIViewController {
     }
 
     private func prepareView(){
+        self.noOfPostSelected()
         SVProgressHUD.show()
         postTbl.rowHeight = UITableView.automaticDimension
         postTbl.estimatedRowHeight = 50
@@ -58,6 +59,17 @@ class ViewController: UIViewController {
         self.getPostListing()
     }
     
+    private func noOfPostSelected(){
+        let filterCount = post.filter({ $0.isSelected == true})
+        if filterCount.count == 0 {
+            self.title = "No post selected"
+        }else if filterCount.count == 1{
+            self.title = "No of selected post : 1"
+        }else{
+            self.title = "No of selected posts : \(filterCount.count)"
+        }
+    }
+    
     // MARK: - Get post listing -
     private func getPostListing(){
         let param = ["tags":"story","page":"\(currentPage)"]
@@ -73,25 +85,26 @@ class ViewController: UIViewController {
             }else{
                 self.post.append(contentsOf: response.hits)
             }
-            
+            self.refreshControl.endRefreshing()
             self.postTbl.reloadData()
+            self.noOfPostSelected()
         }) { (error) in
             SVProgressHUD.dismiss()
         }
     }
 }
-
 // MARK: - TableView DataSource-
 extension ViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.post.count
     }
-    
+   
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
         cell.post = self.post[indexPath.row]
         cell.switchSelected = { selected in
             self.post[indexPath.row].isSelected = selected
+            self.noOfPostSelected()
         }
         return cell
     }

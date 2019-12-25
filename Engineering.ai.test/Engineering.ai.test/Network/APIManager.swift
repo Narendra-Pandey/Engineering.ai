@@ -48,6 +48,7 @@ extension APIManager {
             if response.result.isSuccess {
                 success(response.result.value!)
             }else{
+                self.showAlert(messae: ErrorMessage.APiError.rawValue)
                 failure(response.error!)
             }
         }
