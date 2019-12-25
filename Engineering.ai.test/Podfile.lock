@@ -3,7 +3,6 @@ PODS:
   - AlamofireJsonToObjects (2.4.1):
     - Alamofire
     - EVReflection
-  - DZNEmptyDataSet (1.8.1)
   - EVReflection (5.10.1):
     - EVReflection/Core (= 5.10.1)
   - EVReflection/Core (5.10.1)
@@ -12,7 +11,6 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireJsonToObjects
-  - DZNEmptyDataSet
   - SVProgressHUD
   - UIScrollView-InfiniteScroll
 
@@ -20,7 +18,6 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireJsonToObjects
-    - DZNEmptyDataSet
     - EVReflection
     - SVProgressHUD
     - UIScrollView-InfiniteScroll
@@ -28,11 +25,10 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireJsonToObjects: 2f652417f69ca86f229b704cdd00370bb892af45
-  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   EVReflection: 8124de482178d34ccd56473e16cd95990f9a1113
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIScrollView-InfiniteScroll: 3ef456bcbe759c19f510a383cff96e6647c98c98
 
-PODFILE CHECKSUM: 669e070a825005165b0c65219b54576ae593e8cf
+PODFILE CHECKSUM: d9d43c36510c6e976bd58bd6248764f6848888f5
 
 COCOAPODS: 1.8.4

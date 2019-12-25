@@ -84,10 +84,10 @@
 			children = (
 				6BC19D5023B33ADE00EC0F5F /* AppDelegate */,
 				6BC19D4F23B33AAE00EC0F5F /* Support */,
-				6BC19D5323B33AFC00EC0F5F /* StoryBoard */,
-				6BC19D5123B33AE600EC0F5F /* Scene */,
-				6BC19D4823B336DA00EC0F5F /* Model */,
 				6BC19D4123B3361700EC0F5F /* Network */,
+				6BC19D4823B336DA00EC0F5F /* Model */,
+				6BC19D5123B33AE600EC0F5F /* Scene */,
+				6BC19D5323B33AFC00EC0F5F /* StoryBoard */,
 				6BC19D3B23B3352700EC0F5F /* Info.plist */,
 			);
 			path = Engineering.ai.test;

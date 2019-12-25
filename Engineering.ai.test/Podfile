@@ -6,9 +6,8 @@ target 'Engineering.ai.test' do
   use_frameworks!
 
   # Pods for Engineering.ai.test
-   pod "AlamofireJsonToObjects"
+   pod 'AlamofireJsonToObjects'
    pod 'SVProgressHUD'
-   pod 'DZNEmptyDataSet'
- pod 'UIScrollView-InfiniteScroll'
+   pod 'UIScrollView-InfiniteScroll'
 
 end
